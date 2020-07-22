@@ -193,9 +193,9 @@ const assemblyUpdateCode = (action: ActionList) => {
 /**
  * 单独获取查询接口名称
  */
-const findQuertActionName = () => {
+const findQuertActionName = (findTyle:string = 'query') => {
   const findActionName = dataJson.actionList.find(
-    (_action: ActionList) => _action.type === 'query',
+    (_action: ActionList) => _action.type === findTyle,
   )?.name || '';
   return findActionName;
 };
@@ -211,6 +211,9 @@ const singleGetActionName = (actionName: string) => {
 
 module.exports = {
   assemblyModelHeadCode,
+  findQuertActionName,
+  singleGetActionName,
+
 };
 
 type actionResType = () => string;
