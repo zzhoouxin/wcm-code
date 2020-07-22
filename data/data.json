@@ -22,5 +22,29 @@
     ],
     "model": {
         "namespace": "templateList"
+    },
+    "page": {
+        "pageName": "groupingPage"
+    },
+    "table": {
+        "columns": [{
+                "title": "编号",
+                "key": "id"
+            },
+            {
+                "title": "创建时间",
+                "key": "time",
+                "type": 1
+            },
+            {
+                "title": "boolean类型的",
+                "key": "bil",
+                "type": 2
+            },
+            {
+                "title": "名称",
+                "key": "name"
+            }
+        ]
     }
 }

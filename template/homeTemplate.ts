@@ -1,8 +1,11 @@
 import prettier from 'prettier';
 import fs from 'fs';
+import ora from 'ora';
 import { DataJsonType } from '../data/data';
 
 const { findQuertActionName, singleGetActionName } = require('./modelTemplate');
+
+const pageSpinner = ora('Page模块代码生成中...').start();
 
 const dataJson: DataJsonType = require('../data/data.json');
 
@@ -25,8 +28,11 @@ const assemblyHomeImportCode = () => {
     semi: false,
     parser: 'babel',
   });
-  fs.writeFile('page.js', data, 'utf8', () => {
-    console.log('page代码生成完毕!');
+  fs.writeFile('Page/page.js', data, 'utf8', () => {
+    setTimeout(() => {
+      pageSpinner.stop();
+      pageSpinner.succeed('Page模块代码生成中生成成功!');
+    }, 1500);
   });
 };
 
@@ -198,12 +204,6 @@ const assemblyReduxCode = () => {
   return reduxCode;
 };
 
-assemblyHomeImportCode();
-
-//   const data = prettier.format(interfaceResult, {
-//     semi: false,
-//     parser: 'babel',
-//   });
-//   fs.writeFile('action.js', data, 'utf8', () => {
-//     console.log('action代码生成完毕11!');
-//   });
+module.exports = {
+  assemblyHomeImportCode,
+};

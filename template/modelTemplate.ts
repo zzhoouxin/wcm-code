@@ -1,8 +1,11 @@
 import prettier from 'prettier';
 import fs from 'fs';
+import ora from 'ora';
 import { DataJsonType, ActionList } from '../data/data';
 
 const dataJson: DataJsonType = require('../data/data.json');
+
+const modelSpinner = ora('Model模块代码生成中...').start();
 
 const assemblyModelHeadCode = () => {
   let modelResult = '';
@@ -14,8 +17,11 @@ const assemblyModelHeadCode = () => {
     semi: false,
     parser: 'babel',
   });
-  fs.writeFile('model.js', modelCode, 'utf8', () => {
-    console.log('model代码生成完毕!');
+  fs.writeFile('Page/model.js', modelCode, 'utf8', () => {
+    setTimeout(() => {
+      modelSpinner.stop();
+      modelSpinner.succeed('Model模块代码生成中生成成功!');
+    }, 1000);
   });
 };
 

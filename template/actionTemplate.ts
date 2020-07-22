@@ -1,6 +1,9 @@
 import prettier from 'prettier';
 import fs from 'fs';
+import ora from 'ora';
 import { DataJsonType } from '../data/data';
+
+const actionSpinner = ora('Action模块代码生成中...').start();
 
 const dataJson: DataJsonType = require('../data/data.json');
 /**
@@ -28,8 +31,11 @@ const assemblyActionData = () => {
     semi: false,
     parser: 'babel',
   });
-  fs.writeFile('action.js', data, 'utf8', () => {
-    console.log('action代码生成完毕11!');
+  fs.writeFile('Page/action.js', data, 'utf8', () => {
+    setTimeout(() => {
+      actionSpinner.stop();
+      actionSpinner.succeed('Action模块代码生成中生成成功!');
+    }, 2000);
   });
 };
 
