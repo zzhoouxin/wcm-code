@@ -1,0 +1,26 @@
+{
+    "actionList": [{
+            "name": "activityPage/insertActivityPage",
+            "desc": "创建活动模板",
+            "type": "add"
+        },
+        {
+            "name": "activityPage/deleteMessageListById",
+            "desc": "查询活动列列表",
+            "type": "delete"
+        },
+        {
+            "name": "activityPage/updateActivityPage",
+            "desc": "编辑活动模板",
+            "type": "edit"
+        },
+        {
+            "name": "activityPage/queryMessageListByParam",
+            "desc": "查询活动列列表",
+            "type": "query"
+        }
+    ],
+    "model": {
+        "namespace": "templateList"
+    }
+}
