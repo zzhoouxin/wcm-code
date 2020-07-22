@@ -9,7 +9,33 @@ class groupingPage extends Component {
     queryMessageListByParam();
   }
 
-  columns = []
+  columns = [
+    {
+      title: '编号',
+      key: 'id',
+      dataIndex: 'id',
+    },
+
+    {
+      title: '创建时间',
+      key: 'time',
+      dataIndex: 'time',
+      render: (text, record) => <p>{moment(text).format('YYYY-MM-DD HH:mm:ss')}</p>,
+    },
+
+    {
+      title: 'boolean类型的',
+      key: 'bil',
+      dataIndex: 'bil',
+      render: (text, record) => <p>{text}</p>,
+    },
+
+    {
+      title: '名称',
+      key: 'name',
+      dataIndex: 'name',
+    },
+  ]
 
   render() {
     const {

@@ -52,22 +52,22 @@ const assemblyColumnsCode = () => {
   const { columns } = dataJson.table;
   let columnsCode = 'columns = [';
   columns.map((column) => {
-    // // type: 1 时间格式   2:需要render 3:img
-    // columnsCode += `
-    //   {
-    //     "title":'${column.title}',
-    //     "key":'${column.key}',
-    //     "dataIndex":'${column.key}',
-    //     ${column.type ? renderColumnByType(column.type) : ''}
-    //   },
-    // `;
+    columnsCode += `
+            {
+                title:"${column.title}",
+                key:"${column.key}",
+                dataIndex:"${column.key}"
+                ${column.type ? renderColumnByType(column.type) : ''}
+            },
+    `;
   });
+
   columnsCode += ']';
   return columnsCode;
 };
 
 const renderColumnByType = (type: number) => {
-  let code = 'render:(text,record) =>{ return ';
+  let code = ',render:(text,record) =>{ return ';
   switch (type) {
     // 时间格式
     case 1:
@@ -75,13 +75,14 @@ const renderColumnByType = (type: number) => {
       break;
     // 普通格式-需要翻译的那种
     case 2:
-      code += ' <p>{text}/p>;';
+      code += ' <p>{text}</p>;';
       break;
     // 图片类型
     case 3:
       code += ' <img style={{ width: 50, height: 50 }} src={text} />;';
       break;
     default:
+      code += ' <img style={{ width: 50, height: 50 }} src={text} />;';
       break;
   }
   code += '}';
