@@ -46,5 +46,33 @@
                 "key": "name"
             }
         ]
-    }
+    },
+    "searchFrom": [{
+            "title": "名称",
+            "initialValue": "",
+            "key": "name",
+            "placeholder": "请输入描述吧",
+            "type": "input"
+        },
+        {
+            "title": "创建时间",
+            "initialValue": "",
+            "key": "createTime",
+            "placeholder": "",
+            "type": "date"
+        },
+        {
+            "title": "状态",
+            "initialValue": "",
+            "key": "status",
+            "placeholder": "",
+            "type": "select",
+            "options": [
+                { "value": "", "name": "请选择状态" },
+                { "value": 0, "name": "下架" },
+                { "value": 1, "name": "上架" }
+            ]
+        }
+
+    ]
 }

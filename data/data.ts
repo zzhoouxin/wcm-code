@@ -26,5 +26,19 @@ export interface DataJsonType {
   actionList: ActionList[];
   model: Model;
   page:Page
-  table:Table
+  table:Table,
+  searchFrom:Array<Search>
+}
+export interface Search{
+  title:string,
+  initialValue:string,
+  key:string,
+  type:string,
+  placeholder:string,
+  options?:Array<Options>
+}
+
+export interface Options{
+  name:number|string,
+  value:string|string
 }
