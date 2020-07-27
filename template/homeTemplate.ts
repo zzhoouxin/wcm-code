@@ -186,7 +186,7 @@ const assemblyReduxCode = () => {
         },
         ${queryName}: () => {
           return dispatch({
-            type: '${nameSpace}/queryRouteConfigGroupByParams',
+            type: '${nameSpace}/${queryName}',
             payload: {},
       
           });

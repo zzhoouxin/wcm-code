@@ -5,20 +5,23 @@ import prettier from 'prettier';
 import fs from 'fs';
 import { DataJsonType, Search, Options } from '../data/data';
 
+const { findQuertActionName, singleGetActionName } = require('./modelTemplate');
+
 const dataJson: DataJsonType = require('../data/data.json');
 
 const assemblySearchCode = () => {
   let searchCode = '';
   searchCode += assemblyImportCode();
   searchCode += assemblyRenderCode();
+  searchCode += generateReduxCode();
   const modelCode = prettier.format(searchCode, {
     semi: false,
     parser: 'babel',
   });
   console.log('modelCode====>', modelCode);
-  // fs.writeFile('Page/head.js', modelCode, 'utf8', () => {
-  //   console.log('完成了么');
-  // });
+  fs.writeFile('Page/head.js', modelCode, 'utf8', () => {
+    console.log('完成了么');
+  });
   // console.log('searchCode: ', searchCode);
 };
 
@@ -29,8 +32,8 @@ const assemblyImportCode = () => {
   // 这边是否需要处理antd引入的类型判断呢？
   const importCode = `
     import React ,{Component}from 'react';
-    import PropTypes from 'prop-types';
     import { Form, Row, Col, Input, Select, Button, Icon } from 'antd';
+    import { withRouter } from 'dva/router';
     const FormItem = Form.Item;
     const layout = {
       labelCol: { span: 6 },
@@ -60,8 +63,7 @@ const assemblyRenderCode = () => {
     }
   });
 
-  renderCode += '</Form>)}';
-  renderCode += '} export default Header;';
+  renderCode += '</Form>)}}';
   return renderCode;
 };
 
@@ -69,11 +71,9 @@ const assemblyRenderCode = () => {
  * 根据类型生成输入框
  */
 const generateOptionCodeByType = (data: Search) => {
-  console.log('data: ', data);
-
-  let code = `<Col span={6}><Form.Item {...layout} label={"${data.title}"}>
+  let code = `<Col span={6}><FormItem {...layout} label={"${data.title}"}>
   {getFieldDecorator("${data.key}", {
-    initialValue: "${data.initialValue || ''}",
+    initialValue: "${data.initialValue}",
   })(`;
 
   switch (data.type) {
@@ -90,7 +90,7 @@ const generateOptionCodeByType = (data: Search) => {
       break;
   }
 
-  code += ')}</Form.Item></Col>';
+  code += ')}</FormItem></Col>';
   return code;
 };
 
@@ -103,4 +103,37 @@ const generateSelectCode = (data: Search) => {
   return code;
 };
 
-assemblySearchCode();
+const generateReduxCode = () => {
+  const nameSpace = dataJson.model.namespace;
+  const queryName = singleGetActionName(findQuertActionName());
+  const reduxCode = `
+    const mapStateToProps = (state) => {
+        return {
+        };
+      };
+      
+      const mapDispatchToProps = dispatch => ({
+        setState: (data) => {
+          return dispatch({
+            type: '${nameSpace}/setState',
+            payload: data,
+          });
+        },
+        ${queryName}: () => {
+          return dispatch({
+            type: '${nameSpace}/${queryName}',
+            payload: {},
+      
+          });
+        },
+      });
+      const FormHeader = Form.create()(Header);
+      export default connect(mapStateToProps, mapDispatchToProps)(withRouter(FormHeader));
+    `;
+  return reduxCode;
+};
+
+module.exports = {
+  assemblySearchCode,
+
+};
