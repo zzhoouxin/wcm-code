@@ -16,9 +16,9 @@ const assemblySearchCode = () => {
     parser: 'babel',
   });
   console.log('modelCode====>', modelCode);
-  fs.writeFile('Page/mode1111l.js', modelCode, 'utf8', () => {
-    console.log('完成了么');
-  });
+  // fs.writeFile('Page/head.js', modelCode, 'utf8', () => {
+  //   console.log('完成了么');
+  // });
   // console.log('searchCode: ', searchCode);
 };
 
@@ -50,35 +50,25 @@ const assemblyRenderCode = () => {
     const { getFieldDecorator } = form;
     return (
       <Form>`;
-  // dataJson.searchFrom.map((data:Search, _i:number) => {
-  //   if (_i % 4 === 0) {
-  //     renderCode += ' <Row gutter={12}>';
-  //   }
-  //   renderCode += generateOptionCodeByType(data);
-  //   if (_i % 3 === 0) {
-  //     renderCode += '  </Row>';
-  //   }
-  // });
+  dataJson.searchFrom.map((data: Search, _i: number) => {
+    if (_i % 4 === 0) {
+      renderCode += '<Row gutter={12}>';
+    }
+    renderCode += generateOptionCodeByType(data);
+    if (_i % 3 === 0) {
+      renderCode += '</Row>';
+    }
+  });
 
   renderCode += '</Form>)}';
   renderCode += '} export default Header;';
   return renderCode;
-
-  // const modelCode = prettier.format(renderCode, {
-  //   semi: false,
-  //   parser: 'babel',
-  // });
-  // fs.writeFile('Page/head.js', modelCode, 'utf8', () => {
-  //   setTimeout(() => {
-  //   }, 1000);
-  // });
-  // return renderCode;
 };
 
 /**
  * 根据类型生成输入框
  */
-const generateOptionCodeByType = (data:Search) => {
+const generateOptionCodeByType = (data: Search) => {
   console.log('data: ', data);
 
   let code = `<Col span={6}><Form.Item {...layout} label={"${data.title}"}>
@@ -104,12 +94,12 @@ const generateOptionCodeByType = (data:Search) => {
   return code;
 };
 
-const generateSelectCode = (data:Search) => {
-  let code = ' <Select>';
+const generateSelectCode = (data: Search) => {
+  let code = '<Select>';
   (data.options || []).map((item) => {
     code += `<Option value="${item.value}">${item.name}</Option>`;
   });
-  code += ' </Select>';
+  code += '</Select>';
   return code;
 };
 
