@@ -12,16 +12,17 @@ const assemblyModelHeadCode = () => {
   modelResult = getActionName(); // head
   modelResult += assemblyStateCode(); // state
   modelResult += joiningEffectsCode(); // effects
+
+  modelResult += assemblyReducersCode(); // reducer
+
   modelResult += '}';
   const modelCode = prettier.format(modelResult, {
     semi: false,
     parser: 'babel',
   });
   fs.writeFile('Page/model.js', modelCode, 'utf8', () => {
-    setTimeout(() => {
       modelSpinner.stop();
       modelSpinner.succeed('Model模块代码生成中生成成功!');
-    }, 1000);
   });
 };
 
@@ -44,7 +45,7 @@ const getActionName: actionResType = () => {
 const assemblyStateCode: actionResType = () => {
   const stateCode = `
     export default {
-        namespace: '${dataJson.model.namespace}',
+        namespace: '${dataJson.nameList.modelName}',
         state: {
           list: [],
           pageNo: 1,
@@ -72,19 +73,29 @@ const joiningEffectsCode = () => {
       case 'delete':
         code += assemblyDeleteCode(action);
         break;
-      case 'add':
-        code += assemblyInsertCode(action);
-        break;
-      case 'edit':
-        code += assemblyUpdateCode(action);
-        break;
+      // case 'add':
+      //   code += assemblyInsertCode(action);
+      //   break;
+      // case 'edit':
+      //   code += assemblyUpdateCode(action);
+      //   break;
       default:
         break;
     }
   });
-  code += '}';
+  code += '},';
   return code;
 };
+
+const assemblyReducersCode = () => `
+  reducers: {
+    setState(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
+      };
+    }
+  }`;
 
 /**
  * 组装查询list的代码
@@ -95,11 +106,11 @@ const assemblyQueryListCode = (action: ActionList) => {
   const code = `
     * ${queryName}({ payload }, { call, put, select }){
           const { searchData, pageSize, pageNo } = yield select(state => ({
-            searchData: state.${dataJson.model.namespace}.searchData,
-            pageSize: state.${dataJson.model.namespace}.pageSize,
-            pageNo: state.${dataJson.model.namespace}.pageNo,
+            searchData: state.${dataJson.nameList.modelName}.searchData,
+            pageSize: state.${dataJson.nameList.modelName}.pageSize,
+            pageNo: state.${dataJson.nameList.modelName}.pageNo,
           }));
-          const data = yield call(${queryName}, { ...searchData, pageNum: pageNo, pageSize });
+          const data = yield call(${queryName}, { ...searchData, pageNo, pageSize });
           if (data.code === 1) {
             const { total, list } = data.obj;
             yield put({ type: 'setState', payload: { total, list } });
@@ -122,12 +133,7 @@ const assemblyDeleteCode = (action: ActionList) => {
         const data = yield call(${deleteName}, { id: payload });
         if (data.code === 1) {
             message.success('删除成功');
-            const { pageNo, pageSize, searchData } = yield select(state => ({
-                searchData: state.templateList.searchData,
-                pageSize: state.templateList.pageSize,
-                pageNo: state.templateList.pageNo,
-            }));
-            yield put({ type: '${queryName}', payload: { pageNo, pageSize, ...searchData } });
+            yield put({ type: '${queryName}'});
         }
       },
       `;
@@ -176,7 +182,7 @@ const assemblyUpdateCode = (action: ActionList) => {
   const code = `
       * ${updatetName}({ payload }, { call, put, select }){
         const { addAndUpdateInfo } = yield select(state => ({
-            addAndUpdateInfo: state.${dataJson.model.namespace}.addAndUpdateInfo,
+            addAndUpdateInfo: state.${dataJson.nameList.modelName}.addAndUpdateInfo,
           }));
           const { id } = addAndUpdateInfo;
           const userInfo = JSON.parse(cookie.get('userInfo'));

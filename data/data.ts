@@ -4,8 +4,9 @@ export interface ActionList {
   type: string;
 }
 
-export interface Model {
-  namespace: string;
+export interface Names {
+  modelName: string;
+  pageName:string;
 }
 
 export interface Page{
@@ -15,17 +16,20 @@ export interface Page{
 export interface Columns {
   title: string;
   key: string;
-  type?:number
+  type?:number;
+  width?:string;
+  dictionary?:any;
 }
 
 export interface Table {
   columns: Columns[];
 }
 
+
+
 export interface DataJsonType {
   actionList: ActionList[];
-  model: Model;
-  page:Page
+  nameList:Names,
   table:Table,
   searchFrom:Array<Search>
 }

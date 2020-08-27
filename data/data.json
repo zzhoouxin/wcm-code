@@ -1,78 +1,100 @@
 {
-    "actionList": [{
-            "name": "activityPage/insertActivityPage",
-            "desc": "创建活动模板",
-            "type": "add"
-        },
-        {
-            "name": "activityPage/deleteMessageListById",
-            "desc": "查询活动列列表",
-            "type": "delete"
-        },
-        {
-            "name": "activityPage/updateActivityPage",
-            "desc": "编辑活动模板",
-            "type": "edit"
-        },
-        {
-            "name": "activityPage/queryMessageListByParam",
-            "desc": "查询活动列列表",
-            "type": "query"
+  "actionList": [
+    {
+      "name": "dissertation/addOrUpdateDissertation",
+      "desc": "创建专题模块",
+      "type": "add"
+    },
+    {
+      "name": "dissertation/queryDissertationList",
+      "desc": "查询专题列表",
+      "type": "query"
+    },
+    {
+      "name": "dissertation/deleteDissertation",
+      "desc": "删除路由",
+      "type": "delete"
+    },
+    {
+      "name": "pushManagement/getContentByName",
+      "desc": "根据名称查询"
+    }
+  ],
+  "nameList": {
+    "modelName": "zhouxinModel",
+    "pageName": "zhouxinList"
+  },
+  "table": {
+    "columns": [
+      {
+        "title": "编号",
+        "key": "id"
+      },
+      {
+        "title": "专题名称",
+        "key": "name",
+        "width": "10%"
+      },
+      {
+        "title": "专题描述",
+        "key": "desc",
+        "width": "30%"
+      },
+      {
+        "title": "专题标签",
+        "key": "label",
+        "width": "20%"
+      },
+      {
+        "title": "内容类型",
+        "key": "type",
+        "type": 2,
+        "dictionary": {
+          "1": "文章",
+          "2": "DNA"
         }
-    ],
-    "model": {
-        "namespace": "templateList"
-    },
-    "page": {
-        "pageName": "groupingPage"
-    },
-    "table": {
-        "columns": [{
-                "title": "编号",
-                "key": "id"
-            },
-            {
-                "title": "创建时间",
-                "key": "time",
-                "type": 1
-            },
-            {
-                "title": "boolean类型的",
-                "key": "bil",
-                "type": 2
-            },
-            {
-                "title": "名称",
-                "key": "name"
-            }
-        ]
-    },
-    "searchFrom": [{
-            "title": "名称",
-            "initialValue": "",
-            "key": "name",
-            "placeholder": "请输入描述吧",
-            "type": "input"
-        },
-        {
-            "title": "创建时间",
-            "initialValue": "",
-            "key": "createTime",
-            "placeholder": "",
-            "type": "date"
-        },
-        {
-            "title": "状态",
-            "initialValue": "",
-            "key": "status",
-            "placeholder": "",
-            "type": "select",
-            "options": [
-                { "value": "", "name": "请选择状态" },
-                { "value": 0, "name": "下架" },
-                { "value": 1, "name": "上架" }
-            ]
-        }
-
+      },
+      {
+        "title": "创建时间",
+        "key": "createTime",
+        "type": 1
+      },
+      {
+        "title": "更新时间",
+        "key": "updateTime",
+        "type": 1
+      }
     ]
+  },
+  "searchFrom": [
+    {
+      "title": "名称",
+      "initialValue": "",
+      "key": "name",
+      "placeholder": "请输入描述吧",
+      "type": "input"
+    },
+
+    {
+      "title": "状态",
+      "initialValue": "",
+      "key": "type",
+      "placeholder": "",
+      "type": "select",
+      "options": [
+        {
+          "value": "",
+          "name": "全部"
+        },
+        {
+          "value": "1",
+          "name": "文章"
+        },
+        {
+          "value": "2",
+          "name": "DNA"
+        }
+      ]
+    }
+  ]
 }

@@ -1,7 +1,7 @@
 import prettier from 'prettier';
 import fs from 'fs';
 import ora from 'ora';
-import { DataJsonType } from '../data/data';
+import {Columns, DataJsonType} from '../data/data';
 
 const { findQuertActionName, singleGetActionName } = require('./modelTemplate');
 
@@ -17,11 +17,14 @@ const assemblyHomeImportCode = () => {
     import React, { Component } from 'react';
     import { Modal, Table } from 'antd';
     import { connect } from 'dva';
+    import Heard from './heard';
     import moment from 'moment';
     `;
+  homeCodeResult += assemblyDictionaryCode();
   homeCodeResult += assemblyPageCode();
   homeCodeResult += assemblyColumnsCode();
   homeCodeResult += assemblyRenderCode();
+
   homeCodeResult += '}';
   homeCodeResult += assemblyReduxCode();
   const data = prettier.format(homeCodeResult, {
@@ -29,13 +32,26 @@ const assemblyHomeImportCode = () => {
     parser: 'babel',
   });
   fs.writeFile('Page/page.js', data, 'utf8', () => {
-    setTimeout(() => {
       pageSpinner.stop();
       pageSpinner.succeed('Page模块代码生成中生成成功!');
-    }, 1500);
   });
 };
 
+
+/**
+ * 生成翻译字段的数据
+ */
+const assemblyDictionaryCode = ()=>{
+  let code ='';
+  dataJson.table.columns.map((item:Columns)=>{
+    if(item.dictionary){
+      code += `const ${item.key}DictionAry = ${JSON.stringify(item.dictionary)};`
+    }
+  })
+  return code;
+
+
+}
 /**
  * 组装pageClass头部代码
  */
@@ -43,7 +59,7 @@ const assemblyPageCode = () => {
   const findQueryName = findQuertActionName();
   const queryName = singleGetActionName(findQueryName);
   const pageCode = `
-    class ${dataJson.page.pageName} extends Component {
+    class ${dataJson.nameList.pageName} extends Component {
         componentDidMount() {
             const { ${queryName} } = this.props;
             ${queryName}();
@@ -63,27 +79,44 @@ const assemblyColumnsCode = () => {
                 title:"${column.title}",
                 key:"${column.key}",
                 dataIndex:"${column.key}"
-                ${column.type ? renderColumnByType(column.type) : ''}
+                 ${column.width ? `,width:"${column.width}"` : ''}
+                ${column.type ? renderColumnByType(column) : ''}
             },
     `;
   });
+  columnsCode += `{
+      title: '操作',
+      key: 'operation',
+      render: (text, record) => {
+        return (
+          <div>
+            <a
+             style={{marginLeft:5}}
+              onClick={() => {
+                this.remove(record);
+              }}
+            >删除</a>
+          </div>);
+      },
+    },`;
 
   columnsCode += ']';
   return columnsCode;
 };
 
-const renderColumnByType = (type: number) => {
+const renderColumnByType = (columns: Columns) => {
+
   let code = ',render:(text,record) =>{ return ';
-  switch (type) {
+  switch (columns.type) {
     // 时间格式
     case 1:
       code += ' <p>{moment(text).format("YYYY-MM-DD HH:mm:ss")}</p>;';
       break;
-    // 普通格式-需要翻译的那种
+      // 普通格式-需要翻译的那种
     case 2:
-      code += ' <p>{text}</p>;';
+      code += `<p>{${columns.key}DictionAry[text]}</p>;`;
       break;
-    // 图片类型
+      // 图片类型
     case 3:
       code += ' <img style={{ width: 50, height: 50 }} src={text} />;';
       break;
@@ -107,7 +140,7 @@ const assemblyRenderCode = () => {
         const { list, pageNo, total, history } = this.props;
         return (
         <div>
-            {/* <Heard history={history} /> */}
+            <Heard history={history} />
             <div style={{ background: '#fff' }}>
             <Table
                 rowKey={record => record.id}
@@ -161,10 +194,32 @@ const assemblyRenderCode = () => {
 };
 
 /**
+ * 整合修改的代码-这边分2种场景；
+ * 1.跳到新页面 2、在当前页编辑
+ */
+const assemblyRenderEditCode = () => {
+  const type = 1;
+  let code = '';
+  if (type === 1) {
+    code += ` edit = async (data) => {
+    const { createSetState } = this.props;
+    await createSetState({
+      addAndUpdateInfo: {
+        ...data
+      },
+      isEdit: true,
+    });
+    this.props.history.push({ pathname: '/project/createProject' });
+  }`;
+  }
+  return code;
+};
+
+/**
  * 底部redux基础代码
  */
 const assemblyReduxCode = () => {
-  const nameSpace = dataJson.model.namespace;
+  const nameSpace = dataJson.nameList.modelName;
   const queryName = singleGetActionName(findQuertActionName());
   const deleteName = singleGetActionName(findQuertActionName('delete'));
 
@@ -193,13 +248,13 @@ const assemblyReduxCode = () => {
         },
         ${deleteName}: (data) => {
           return dispatch({
-            type: '${nameSpace}/deleteGroup',
+            type: '${nameSpace}/${deleteName}',
             payload: data,
           });
         },
       
       });
-      export default connect(mapStateToProps, mapDispatchToProps)(${dataJson.page.pageName});
+      export default connect(mapStateToProps, mapDispatchToProps)(${dataJson.nameList.pageName});
     `;
   return reduxCode;
 };
