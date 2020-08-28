@@ -10,6 +10,7 @@
     "license": "ISC",
     "dependencies": {
         "@types/prettier": "^2.0.2",
+        "opn": "^6.0.0",
         "ora": "^4.0.5",
         "prettier": "^2.0.5"
     },

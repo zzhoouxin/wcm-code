@@ -1,10 +1,12 @@
+import { openBrowser } from './utils/fs-utils';
+
 const { assemblyActionData } = require('./template/actionTemplate');
 const { assemblyModelHeadCode } = require('./template/modelTemplate');
 const { assemblyHomeImportCode } = require('./template/homeTemplate');
 const { assemblySearchCode } = require('./template/searchTemplate');
 const { assemblyRouter } = require('./template/routerTemplate');
 
-async function run() {
+const run = () => {
   // // 生成页面
   assemblyHomeImportCode();
   // 生成action
@@ -15,6 +17,7 @@ async function run() {
   assemblySearchCode();
   // 修改路由
   assemblyRouter();
-}
+  openBrowser();
+};
 
 run();
