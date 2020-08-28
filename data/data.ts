@@ -7,11 +7,10 @@ export interface ActionList {
 export interface Names {
   modelName: string;
   pageName:string;
+  searchBtnName:string;
+  fileName:string;
 }
 
-export interface Page{
-  pageName: string
-}
 
 export interface Columns {
   title: string;

@@ -2,6 +2,10 @@ import prettier from 'prettier';
 import fs from 'fs';
 import ora from 'ora';
 import { DataJsonType, ActionList } from '../data/data';
+// @ts-ignore
+import config from '../utils/config';
+// @ts-ignore
+import { deleteFolderRecursive } from '../utils/fs-utils';
 
 const dataJson: DataJsonType = require('../data/data.json');
 
@@ -12,17 +16,26 @@ const assemblyModelHeadCode = () => {
   modelResult = getActionName(); // head
   modelResult += assemblyStateCode(); // state
   modelResult += joiningEffectsCode(); // effects
-
   modelResult += assemblyReducersCode(); // reducer
-
   modelResult += '}';
   const modelCode = prettier.format(modelResult, {
     semi: false,
     parser: 'babel',
   });
-  fs.writeFile('Page/model.js', modelCode, 'utf8', () => {
-      modelSpinner.stop();
-      modelSpinner.succeed('Model模块代码生成中生成成功!');
+  writeModelFileCode(modelCode);
+};
+
+/**
+ * 写入基本文件
+ * @param data
+ */
+const writeModelFileCode = (data:string) => {
+  // const actionFile = fs.existsSync(`${config.modelFilePath}${dataJson.nameList.fileName}`);
+  deleteFolderRecursive(`${config.modelFilePath}${dataJson.nameList.fileName}`);
+  fs.mkdirSync(`${config.modelFilePath}${dataJson.nameList.fileName}`);
+  fs.writeFile(`${config.modelFilePath}${dataJson.nameList.fileName}/${dataJson.nameList.modelName}.js`, data, 'utf8', () => {
+    modelSpinner.stop();
+    modelSpinner.succeed('Model模块代码生成中生成成功!');
   });
 };
 
@@ -34,7 +47,7 @@ const getActionName: actionResType = () => {
   const allActionName = dataJson.actionList
     .map((action: ActionList) => singleGetActionName(action.name))
     .join(',');
-  modelResult += `import { ${allActionName} } from './action';`;
+  modelResult += `import { ${allActionName} } from '../../services/${dataJson.nameList.fileName}';`;
   modelResult += 'import { message } from "antd";';
   modelResult += 'import cookie from "js-cookie";';
   return modelResult;

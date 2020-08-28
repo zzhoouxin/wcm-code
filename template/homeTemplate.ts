@@ -2,6 +2,10 @@ import prettier from 'prettier';
 import fs from 'fs';
 import ora from 'ora';
 import {Columns, DataJsonType} from '../data/data';
+// @ts-ignore
+import config from '../utils/config';
+// @ts-ignore
+import { deleteFolderRecursive } from '../utils/fs-utils';
 
 const { findQuertActionName, singleGetActionName } = require('./modelTemplate');
 
@@ -17,7 +21,7 @@ const assemblyHomeImportCode = () => {
     import React, { Component } from 'react';
     import { Modal, Table } from 'antd';
     import { connect } from 'dva';
-    import Heard from './heard';
+    import Header from './header';
     import moment from 'moment';
     `;
   homeCodeResult += assemblyDictionaryCode();
@@ -31,9 +35,21 @@ const assemblyHomeImportCode = () => {
     semi: false,
     parser: 'babel',
   });
-  fs.writeFile('Page/page.js', data, 'utf8', () => {
-      pageSpinner.stop();
-      pageSpinner.succeed('Page模块代码生成中生成成功!');
+
+  writeServiceFileCode(data);
+};
+
+/**
+ * 写入基本文件
+ * @param data
+ */
+const writeServiceFileCode = (data:string) => {
+  deleteFolderRecursive(`${config.homeFilePath}${dataJson.nameList.fileName}`);
+  fs.mkdirSync(`${config.homeFilePath}${dataJson.nameList.fileName}`);
+  fs.mkdirSync(`${config.homeFilePath}${dataJson.nameList.fileName}/${dataJson.nameList.pageName}`);
+  fs.writeFile(`${config.homeFilePath}${dataJson.nameList.fileName}/${dataJson.nameList.pageName}/index.js`, data, 'utf8', () => {
+    pageSpinner.stop();
+    pageSpinner.succeed('Page模块代码生成中生成成功!');
   });
 };
 
@@ -140,7 +156,7 @@ const assemblyRenderCode = () => {
         const { list, pageNo, total, history } = this.props;
         return (
         <div>
-            <Heard history={history} />
+            <Header history={history} />
             <div style={{ background: '#fff' }}>
             <Table
                 rowKey={record => record.id}

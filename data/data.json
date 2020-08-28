@@ -21,8 +21,11 @@
     }
   ],
   "nameList": {
+    "fileName": "zhouxin",
     "modelName": "zhouxinModel",
-    "pageName": "zhouxinList"
+    "pageName": "zhouxinList",
+    "searchBtnName": "新增专题1"
+
   },
   "table": {
     "columns": [

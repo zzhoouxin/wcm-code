@@ -5,6 +5,10 @@ import prettier from 'prettier';
 import fs from 'fs';
 import ora from 'ora';
 import { DataJsonType, Search } from '../data/data';
+// @ts-ignore
+import config from '../utils/config';
+// @ts-ignore
+import { deleteFolderRecursive } from '../utils/fs-utils';
 
 const searchSpinner = ora('搜索模块代码生成中...').start();
 
@@ -22,11 +26,20 @@ const assemblySearchCode = () => {
     semi: false,
     parser: 'babel',
   });
-  fs.writeFile('Page/heard.js', modelCode, 'utf8', () => {
+  writeServiceFileCode(modelCode);
+};
+
+
+
+/**
+ * 写入基本文件
+ * @param data
+ */
+const writeServiceFileCode = (data:string) => {
+  fs.writeFile(`${config.homeFilePath}${dataJson.nameList.fileName}/${dataJson.nameList.pageName}/header.js`, data, 'utf8', () => {
     searchSpinner.stop();
     searchSpinner.succeed('搜索模块代码生成成功!!');
   });
-  // console.log('searchCode: ', searchCode);
 };
 
 /**
@@ -48,9 +61,9 @@ const assemblyImportCode = () => {
 /**
  * 渲染form提交代码
  */
-const assemblyFormSubmitCode = ()=>{
+const assemblyFormSubmitCode = () => {
   const queryName = singleGetActionName(findQuertActionName());
-  const code =`handleSubmit = (e) => {
+  const code = `handleSubmit = (e) => {
     const { setState, ${queryName} } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -64,8 +77,7 @@ const assemblyFormSubmitCode = ()=>{
     this.props.form.resetFields();
   };`;
   return code;
-
-}
+};
 
 /**
  * 渲染选择宽-input框-时间选择框code
@@ -93,7 +105,9 @@ const assemblyRenderCode = () => {
 /**
  * 生成搜索框的底部按钮
  */
-const generateBottomBtn = () => `<Row gutter={12}>
+const generateBottomBtn = () => {
+  const { searchBtnName } = dataJson.nameList;
+  const code = `<Row gutter={12}>
           <div
             style={{
               display: 'flex',
@@ -106,7 +120,7 @@ const generateBottomBtn = () => `<Row gutter={12}>
               this.createProject();
             }}
             >
-              新增专题
+              ${searchBtnName}
             </Button>
 
             <div>
@@ -121,6 +135,8 @@ const generateBottomBtn = () => `<Row gutter={12}>
             </div>
           </div>
         </Row>`;
+  return code;
+};
 /**
  * 根据类型生成输入框
  */
