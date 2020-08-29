@@ -1,10 +1,10 @@
 import { openBrowser } from './utils/fs-utils';
 
-const { assemblyActionData } = require('./template/actionTemplate');
-const { assemblyModelHeadCode } = require('./template/modelTemplate');
-const { assemblyHomeImportCode } = require('./template/homeTemplate');
-const { assemblySearchCode } = require('./template/searchTemplate');
-const { assemblyRouter } = require('./template/routerTemplate');
+const { assemblyActionData } = require('./listTemplate/actionTemplate');
+const { assemblyModelHeadCode } = require('./listTemplate/modelTemplate');
+const { assemblyHomeImportCode } = require('./listTemplate/homeTemplate');
+const { assemblySearchCode } = require('./listTemplate/searchTemplate');
+const { assemblyRouter } = require('./listTemplate/routerTemplate');
 
 const run = () => {
   // // 生成页面
