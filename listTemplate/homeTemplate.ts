@@ -7,7 +7,7 @@ import config from '../utils/config';
 // @ts-ignore
 import { deleteFolderRecursive } from '../utils/fs-utils';
 
-const { findQuertActionName, singleGetActionName } = require('./modelTemplate');
+const { findQueryActionName, singleGetActionName } = require('./modelTemplate');
 
 const pageSpinner = ora('Page模块代码生成中...').start();
 
@@ -44,10 +44,10 @@ const assemblyHomeImportCode = () => {
  * @param data
  */
 const writeServiceFileCode = (data:string) => {
-  deleteFolderRecursive(`${config.homeFilePath}${dataJson.nameList.fileName}`);
-  fs.mkdirSync(`${config.homeFilePath}${dataJson.nameList.fileName}`);
-  fs.mkdirSync(`${config.homeFilePath}${dataJson.nameList.fileName}/${dataJson.nameList.pageName}`);
-  fs.writeFile(`${config.homeFilePath}${dataJson.nameList.fileName}/${dataJson.nameList.pageName}/index.js`, data, 'utf8', () => {
+  deleteFolderRecursive(`${config.projectPath}/src/routes/${dataJson.nameList.fileName}`);
+  fs.mkdirSync(`${config.projectPath}/src/routes/${dataJson.nameList.fileName}`);
+  fs.mkdirSync(`${config.projectPath}/src/routes/${dataJson.nameList.fileName}/${dataJson.nameList.pageName}`);
+  fs.writeFile(`${config.projectPath}/src/routes/${dataJson.nameList.fileName}/${dataJson.nameList.pageName}/index.js`, data, 'utf8', () => {
     pageSpinner.stop();
     pageSpinner.succeed('Page模块代码生成中生成成功!');
   });
@@ -72,7 +72,7 @@ const assemblyDictionaryCode = ()=>{
  * 组装pageClass头部代码
  */
 const assemblyPageCode = () => {
-  const findQueryName = findQuertActionName();
+  const findQueryName = findQueryActionName();
   const queryName = singleGetActionName(findQueryName);
   const pageCode = `
     class ${dataJson.nameList.pageName} extends Component {
@@ -148,8 +148,8 @@ const renderColumnByType = (columns: Columns) => {
  * 组装render代码
  */
 const assemblyRenderCode = () => {
-  const queryName = singleGetActionName(findQuertActionName());
-  const deleteName = singleGetActionName(findQuertActionName('delete'));
+  const queryName = singleGetActionName(findQueryActionName());
+  const deleteName = singleGetActionName(findQueryActionName('delete'));
   const renderCode = `
 
     render() {
@@ -236,8 +236,8 @@ const assemblyRenderEditCode = () => {
  */
 const assemblyReduxCode = () => {
   const nameSpace = dataJson.nameList.modelName;
-  const queryName = singleGetActionName(findQuertActionName());
-  const deleteName = singleGetActionName(findQuertActionName('delete'));
+  const queryName = singleGetActionName(findQueryActionName());
+  const deleteName = singleGetActionName(findQueryActionName('delete'));
 
   const reduxCode = `
     const mapStateToProps = (state) => {

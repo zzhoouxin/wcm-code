@@ -22,8 +22,8 @@
   ],
   "nameList": {
     "fileName": "zhangling",
-    "modelName": "zhouxinModel",
-    "pageName": "zhouxinList",
+    "modelName": "zhanglingModel",
+    "pageName": "zhanglingList",
     "searchBtnName": "新增专题1"
 
   },
@@ -99,5 +99,87 @@
         }
       ]
     }
-  ]
+  ],
+  "createPageData": {
+    "fileName": "zhangling",
+    "modelName":"project",
+    "pageName": "createProject",
+    "formList": [
+      {
+        "title": "专题名称",
+        "required": true,
+        "help": "15字以内",
+        "initialValue": "1",
+        "key": "name",
+        "placeholder": "请输入描述吧",
+        "type": "input",
+        "maxLength": 100,
+        "width": "30%"
+      },
+      {
+        "title": "专题描述",
+        "required": true,
+        "help": "200字以内",
+        "key": "desc",
+        "placeholder": "请输入专题描述",
+        "type": "textArea",
+        "maxLength": 200,
+        "width": "70%"
+      },
+      {
+        "title": "专题标签",
+        "required": true,
+        "help": "200字以内",
+        "key": "label",
+        "placeholder": "请输入专题标签",
+        "type": "input",
+        "maxLength": 200,
+        "width": "70%"
+      },
+
+      {
+        "title": "专题头图",
+        "required": true,
+        "help": "200字以内",
+        "key": "headImage",
+        "placeholder": "请输入专题头图",
+        "type": "input",
+        "maxLength": 200,
+        "width": "70%"
+      },
+      {
+        "title": "内容类型",
+        "initialValue": "",
+        "key": "type",
+        "type": "select",
+        "width": "10%",
+        "options": [
+          {
+            "value": "",
+            "name": "全部"
+          },
+          {
+            "value": "1",
+            "name": "文章"
+          },
+          {
+            "value": "2",
+            "name": "DNA"
+          }
+        ]
+      },
+      {
+        "title": "专题内容",
+        "required": true,
+        "help": "200字以内",
+        "key": "contentList",
+        "placeholder": "请输入专题内容",
+        "type": "input",
+        "maxLength": 200,
+        "width": "70%"
+      }
+    ]
+
+
+  }
 }

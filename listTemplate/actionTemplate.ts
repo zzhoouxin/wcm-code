@@ -41,12 +41,12 @@ const assemblyActionData = () => {
  * @param data
  */
 const writeServiceFileCode = (data:string) => {
-  const actionFile = fs.existsSync(`${config.serviceFilePath}${dataJson.nameList.fileName}`);
+  const actionFile = fs.existsSync(`${config.projectPath}/src/services/${dataJson.nameList.fileName}`);
   if (actionFile) {
   } else {
-    fs.mkdirSync(`${config.serviceFilePath}${dataJson.nameList.fileName}`);
+    fs.mkdirSync(`${config.projectPath}/src/services/${dataJson.nameList.fileName}`);
   }
-  fs.writeFile(`${config.serviceFilePath}${dataJson.nameList.fileName}/index.js`, data, 'utf8', () => {
+  fs.writeFile(`${config.projectPath}/src/services/${dataJson.nameList.fileName}/index.js`, data, 'utf8', () => {
     actionSpinner.stop();
     actionSpinner.succeed('Action模块代码生成中生成成功!');
   });

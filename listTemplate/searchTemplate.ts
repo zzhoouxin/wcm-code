@@ -12,7 +12,7 @@ import { deleteFolderRecursive } from '../utils/fs-utils';
 
 const searchSpinner = ora('搜索模块代码生成中...').start();
 
-const { findQuertActionName, singleGetActionName } = require('./modelTemplate');
+const { findQueryActionName, singleGetActionName } = require('./modelTemplate');
 
 const dataJson: DataJsonType = require('../data/data.json');
 
@@ -36,7 +36,7 @@ const assemblySearchCode = () => {
  * @param data
  */
 const writeServiceFileCode = (data:string) => {
-  fs.writeFile(`${config.homeFilePath}${dataJson.nameList.fileName}/${dataJson.nameList.pageName}/header.js`, data, 'utf8', () => {
+  fs.writeFile(`${config.projectPath}/src/routes/${dataJson.nameList.fileName}/${dataJson.nameList.pageName}/header.js`, data, 'utf8', () => {
     searchSpinner.stop();
     searchSpinner.succeed('搜索模块代码生成成功!!');
   });
@@ -62,7 +62,7 @@ const assemblyImportCode = () => {
  * 渲染form提交代码
  */
 const assemblyFormSubmitCode = () => {
-  const queryName = singleGetActionName(findQuertActionName());
+  const queryName = singleGetActionName(findQueryActionName());
   const code = `handleSubmit = (e) => {
     const { setState, ${queryName} } = this.props;
     e.preventDefault();
@@ -177,7 +177,7 @@ const generateSelectCode = (data: Search) => {
 
 const generateReduxCode = () => {
   const nameSpace = dataJson.nameList.modelName;
-  const queryName = singleGetActionName(findQuertActionName());
+  const queryName = singleGetActionName(findQueryActionName());
   const reduxCode = `
     const mapStateToProps = (state) => {
         return {

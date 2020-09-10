@@ -5,6 +5,9 @@ const { assemblyModelHeadCode } = require('./listTemplate/modelTemplate');
 const { assemblyHomeImportCode } = require('./listTemplate/homeTemplate');
 const { assemblySearchCode } = require('./listTemplate/searchTemplate');
 const { assemblyRouter } = require('./listTemplate/routerTemplate');
+//创建
+const { assemblyCreateHomeCode } = require('./createTemplate/createTemplate');
+const { assemblyCreateRouter } = require('./createTemplate/routerTemplate');
 
 const run = () => {
   // // 生成页面
@@ -17,6 +20,11 @@ const run = () => {
   assemblySearchCode();
   // 修改路由
   assemblyRouter();
+  // 生成创建页面
+  assemblyCreateHomeCode();
+
+  assemblyCreateRouter();
+
   openBrowser();
 };
 

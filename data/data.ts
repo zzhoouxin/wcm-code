@@ -31,6 +31,7 @@ export interface DataJsonType {
   nameList:Names,
   table:Table,
   searchFrom:Array<Search>
+  createPageData:CreateProject
 }
 export interface Search{
   title:string,
@@ -44,4 +45,25 @@ export interface Search{
 export interface Options{
   name:number|string,
   value:string|string
+}
+
+//创建类型
+export interface CreateProject {
+  fileName: string;
+  formList: FormList[];
+  modelName:string;
+  pageName:string;
+}
+export interface FormList {
+  title: string;
+  required: boolean;
+  help: string;
+  initialValue: string;
+  key: string;
+  placeholder: string;
+  type: string;
+  maxLength:number;
+  width:string;
+  options:Array<Options>
+
 }

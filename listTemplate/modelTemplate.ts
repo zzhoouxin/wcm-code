@@ -30,10 +30,10 @@ const assemblyModelHeadCode = () => {
  * @param data
  */
 const writeModelFileCode = (data:string) => {
-  // const actionFile = fs.existsSync(`${config.modelFilePath}${dataJson.nameList.fileName}`);
-  deleteFolderRecursive(`${config.modelFilePath}${dataJson.nameList.fileName}`);
-  fs.mkdirSync(`${config.modelFilePath}${dataJson.nameList.fileName}`);
-  fs.writeFile(`${config.modelFilePath}${dataJson.nameList.fileName}/${dataJson.nameList.modelName}.js`, data, 'utf8', () => {
+  // const actionFile = fs.existsSync(`${config.projectPath}/src/models/}${dataJson.nameList.fileName}`);
+  deleteFolderRecursive(`${config.projectPath}/src/models/${dataJson.nameList.fileName}`);
+  fs.mkdirSync(`${config.projectPath}/src/models/${dataJson.nameList.fileName}`);
+  fs.writeFile(`${config.projectPath}/src/models/${dataJson.nameList.fileName}/${dataJson.nameList.modelName}.js`, data, 'utf8', () => {
     modelSpinner.stop();
     modelSpinner.succeed('Model模块代码生成中生成成功!');
   });
@@ -139,7 +139,7 @@ const assemblyQueryListCode = (action: ActionList) => {
  */
 const assemblyDeleteCode = (action: ActionList) => {
   const deleteName = singleGetActionName(action.name);
-  const findQueryName = findQuertActionName();
+  const findQueryName = findQueryActionName();
   const queryName = singleGetActionName(findQueryName);
   const code = `
       * ${deleteName}({ payload }, { call, put, select }){
@@ -159,7 +159,7 @@ const assemblyDeleteCode = (action: ActionList) => {
  */
 const assemblyInsertCode = (action: ActionList) => {
   const insertName = singleGetActionName(action.name);
-  const findQueryName = findQuertActionName();
+  const findQueryName = findQueryActionName();
   const queryName = singleGetActionName(findQueryName);
   const code = `
     * ${insertName}({ payload }, { call, put, select }){
@@ -190,7 +190,7 @@ const assemblyInsertCode = (action: ActionList) => {
  */
 const assemblyUpdateCode = (action: ActionList) => {
   const updatetName = singleGetActionName(action.name);
-  const findQueryName = findQuertActionName();
+  const findQueryName = findQueryActionName();
   const queryName = singleGetActionName(findQueryName);
   const code = `
       * ${updatetName}({ payload }, { call, put, select }){
@@ -218,9 +218,9 @@ const assemblyUpdateCode = (action: ActionList) => {
 /**
  * 单独获取查询接口名称
  */
-const findQuertActionName = (findTyle:string = 'query') => {
+const findQueryActionName = (findType:string = 'query') => {
   const findActionName = dataJson.actionList.find(
-    (_action: ActionList) => _action.type === findTyle,
+    (_action: ActionList) => _action.type === findType,
   )?.name || '';
   return findActionName;
 };
@@ -236,7 +236,7 @@ const singleGetActionName = (actionName: string) => {
 
 module.exports = {
   assemblyModelHeadCode,
-  findQuertActionName,
+  findQueryActionName,
   singleGetActionName,
 
 };
