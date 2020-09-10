@@ -20,6 +20,7 @@ const assemblySearchCode = () => {
   let searchCode = '';
   searchCode += assemblyImportCode();
   searchCode += assemblyFormSubmitCode();
+  searchCode += generateInsertBtnFn();
   searchCode += assemblyRenderCode();
   searchCode += generateReduxCode();
   const modelCode = prettier.format(searchCode, {
@@ -28,8 +29,6 @@ const assemblySearchCode = () => {
   });
   writeServiceFileCode(modelCode);
 };
-
-
 
 /**
  * 写入基本文件
@@ -103,6 +102,18 @@ const assemblyRenderCode = () => {
 };
 
 /**
+ * 生成新增按钮跳转代码
+ */
+const generateInsertBtnFn = () => {
+  const insertBtnFnCode = `
+    add = () => {
+  this.props.router.push({ pathname: '/${dataJson.createPageData.fileName}/${dataJson.createPageData.pageName}' });
+  }
+    `;
+  return insertBtnFnCode;
+};
+
+/**
  * 生成搜索框的底部按钮
  */
 const generateBottomBtn = () => {
@@ -117,7 +128,7 @@ const generateBottomBtn = () => {
           >
             <Button
               type="primary" style={{ marginTop: 10 }} onClick={() => {
-              this.createProject();
+              this.add();
             }}
             >
               ${searchBtnName}

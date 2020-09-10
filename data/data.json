@@ -1,4 +1,5 @@
 {
+
   "actionList": [
     {
       "name": "dissertation/addOrUpdateDissertation",
@@ -100,6 +101,7 @@
       ]
     }
   ],
+  "openPage": true,
   "createPageData": {
     "fileName": "zhangling",
     "modelName":"project",
