@@ -1,4 +1,4 @@
 # wcm-code
-实现一键生成系统代码-并可直接运行；
+自娱自乐 cms一键生成
 1.npm install 
 2.ts-node index.ts
