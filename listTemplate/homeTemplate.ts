@@ -107,6 +107,11 @@ const assemblyColumnsCode = () => {
         return (
           <div>
             <a
+              onClick={() => {
+                this.edit(record);
+              }}
+            >编辑</a>
+            <a
              style={{marginLeft:5}}
               onClick={() => {
                 this.remove(record);
@@ -186,6 +191,20 @@ const assemblyRenderCode = () => {
     };
 
     /**
+     * 编辑事件
+     */ 
+  edit = async (data) => {
+    const { createSetState } = this.props;
+    await createSetState({
+      addAndUpdateInfo: {
+        ...data
+      },
+      isEdit: true,
+    });
+    this.props.history.push({ pathname:  '/${dataJson.createPageData.fileName}/${dataJson.createPageData.pageName}' });
+  }
+
+    /**
      * 删除事件
      */ 
     remove = (item) => {
@@ -236,6 +255,7 @@ const assemblyRenderEditCode = () => {
  */
 const assemblyReduxCode = () => {
   const nameSpace = dataJson.nameList.modelName;
+  const modelName = dataJson.createPageData.modelName;
   const queryName = singleGetActionName(findQueryActionName());
   const deleteName = singleGetActionName(findQueryActionName('delete'));
 
@@ -252,6 +272,12 @@ const assemblyReduxCode = () => {
         setState: (data) => {
           return dispatch({
             type: '${nameSpace}/setState',
+            payload: data,
+          });
+        },
+         createSetState: (data) => {
+          return dispatch({
+            type: '${modelName}/setState',
             payload: data,
           });
         },
