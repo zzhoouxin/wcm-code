@@ -105,10 +105,16 @@ const assemblyRenderCode = () => {
  * 生成新增按钮跳转代码
  */
 const generateInsertBtnFn = () => {
+  const isOpenPage = dataJson.openPage;
+  let contentCode = '';
+  if (isOpenPage) {
+    contentCode = ` this.props.router.push({ pathname: '/${dataJson.createPageData.fileName}/${dataJson.createPageData.pageName}' });`;
+  }
+
   const insertBtnFnCode = `
     add = () => {
-  this.props.router.push({ pathname: '/${dataJson.createPageData.fileName}/${dataJson.createPageData.pageName}' });
-  }
+      ${contentCode}
+   }
     `;
   return insertBtnFnCode;
 };

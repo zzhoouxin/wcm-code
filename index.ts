@@ -9,6 +9,7 @@ const { assemblyRouter } = require('./listTemplate/routerTemplate');
 // 创建
 const { assemblyCreateHomeCode } = require('./createTemplate/createTemplate');
 const { assemblyCreateRouter } = require('./createTemplate/routerTemplate');
+const { assemblyCreateModeCode } = require('./createTemplate/createModelTemplate');
 
 const dataJson: DataJsonType = require('./data/data.json');
 
@@ -27,6 +28,7 @@ const run = () => {
     // 生成创建页面
     assemblyCreateHomeCode();
     assemblyCreateRouter();
+    assemblyCreateModeCode();
   }
 
   openBrowser();

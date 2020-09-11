@@ -20,13 +20,12 @@ const assemblyCreateRouter = () => {
           name: '${dataJson.nameList.fileName}',
           getComponent(nextState, cb) {
             require.ensure([], require => {
-              // registerModel(app, require('./models/${dataJson.createPageData.fileName}/${dataJson.createPageData.modelName}'))
-                registerModel(app, require('./models/project/createModel'))
+               registerModel(app, require('./models/${dataJson.createPageData.fileName}/${dataJson.createPageData.modelName}'))
               cb(null, require('./routes/${dataJson.createPageData.fileName}/${dataJson.createPageData.pageName}'));
             })
           }
         },`);
-  fs.writeFileSync('/Users/admin/AiJia/wcm-front/src/router.js', routerData.join('\r\n'));
+  fs.writeFileSync(`${config.projectPath}/src/router.js`, routerData.join('\r\n'));
   routerSpinner.stop();
   routerSpinner.succeed('新增模块router生成成功!');
 };

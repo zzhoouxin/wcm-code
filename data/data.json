@@ -104,14 +104,14 @@
   "openPage": true,
   "createPageData": {
     "fileName": "zhangling",
-    "modelName":"project",
+    "modelName":"createProjectModel",
     "pageName": "createProject",
     "formList": [
       {
         "title": "专题名称",
         "required": true,
         "help": "15字以内",
-        "initialValue": "1",
+
         "key": "name",
         "placeholder": "请输入描述吧",
         "type": "input",
@@ -151,9 +151,9 @@
       },
       {
         "title": "内容类型",
-        "initialValue": "",
         "key": "type",
         "type": "select",
+        "initialValue": "1",
         "width": "10%",
         "options": [
           {
@@ -161,11 +161,11 @@
             "name": "全部"
           },
           {
-            "value": "1",
+            "value": 1,
             "name": "文章"
           },
           {
-            "value": "2",
+            "value":2,
             "name": "DNA"
           }
         ]
