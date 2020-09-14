@@ -8,7 +8,7 @@ import config from '../utils/config';
 
 const dataJson: DataJsonType = require('../data/data.json');
 
-const createSpinner = ora('新增模块代码生成中...').start();
+let createSpinner = null as any;
 
 const { findQueryActionName, singleGetActionName } = require('../listTemplate/modelTemplate');
 
@@ -16,6 +16,7 @@ const { findQueryActionName, singleGetActionName } = require('../listTemplate/mo
  * 创建新增代码入口+头部code
  */
 const assemblyCreateHomeCode = () => {
+  createSpinner = ora('新增模块代码生成中...').start();
   let createCodeResult = `
     import React, { Component } from 'react';
     import { connect } from 'dva';
@@ -74,7 +75,6 @@ const assemblyClassCode = () => {
                const { cleanData } = this.props;
                cleanData();
             }
-       
     `;
   classCode += handleSubmitCode();
   classCode += renderCodeFn();

@@ -101,11 +101,13 @@
       ]
     }
   ],
-  "openPage": true,
+  "openPage": false,
+  "updateAndInsertSameInterface": true,
   "createPageData": {
     "fileName": "zhangling",
     "modelName":"createProjectModel",
     "pageName": "createProject",
+    "modalTitle": "新增专题",
     "formList": [
       {
         "title": "专题名称",
@@ -154,7 +156,7 @@
         "key": "type",
         "type": "select",
         "initialValue": "1",
-        "width": "10%",
+        "width": "50%",
         "options": [
           {
             "value": "",

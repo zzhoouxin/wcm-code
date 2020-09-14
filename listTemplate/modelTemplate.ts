@@ -56,6 +56,18 @@ const getActionName: actionResType = () => {
  * 组装state代码
  */
 const assemblyStateCode: actionResType = () => {
+  let initValue = '';
+  dataJson.createPageData.formList.map((item) => {
+    if (item.initialValue) {
+      initValue += `${item.key}:"${item.initialValue}",`
+    }
+  });
+
+  const nowPageParams = `isShowModal:false,
+     addAndUpdateInfo: {
+      ${initValue}
+      },`;
+
   const stateCode = `
     export default {
         namespace: '${dataJson.nameList.modelName}',
@@ -65,6 +77,7 @@ const assemblyStateCode: actionResType = () => {
           total: 0,
           pageSize: 10,
           searchData: {},
+          ${!dataJson.openPage ? nowPageParams : ''}
         },
         subscriptions: {
          
@@ -86,9 +99,9 @@ const joiningEffectsCode = () => {
       case 'delete':
         code += assemblyDeleteCode(action);
         break;
-      // case 'add':
-      //   code += assemblyInsertCode(action);
-      //   break;
+      case 'add':
+        code += assemblyInsertCode(action);
+        break;
       // case 'edit':
       //   code += assemblyUpdateCode(action);
       //   break;
@@ -172,13 +185,9 @@ const assemblyInsertCode = (action: ActionList) => {
         };
       const data = yield call(${insertName}, params);
       if (data.code === 1) {
-          message.success('添加成功');
-          const { pageNo, pageSize, searchData } = yield select(state => ({
-              searchData: state.templateList.searchData,
-              pageSize: state.templateList.pageSize,
-              pageNo: state.templateList.pageNo,
-          }));
-          yield put({ type: '${queryName}', payload: { pageNo, pageSize, ...searchData } });
+          message.success(payload.id ? '更新成功!' : '创建成功!');
+           yield put({ type: "setState", payload: { isShowModal:false } })
+          yield put({ type: '${queryName}' });
       }
     },
     `;
@@ -189,11 +198,11 @@ const assemblyInsertCode = (action: ActionList) => {
  * @param action
  */
 const assemblyUpdateCode = (action: ActionList) => {
-  const updatetName = singleGetActionName(action.name);
+  const updateName = singleGetActionName(action.name);
   const findQueryName = findQueryActionName();
   const queryName = singleGetActionName(findQueryName);
   const code = `
-      * ${updatetName}({ payload }, { call, put, select }){
+      * ${updateName}({ payload }, { call, put, select }){
         const { addAndUpdateInfo } = yield select(state => ({
             addAndUpdateInfo: state.${dataJson.nameList.modelName}.addAndUpdateInfo,
           }));
@@ -205,7 +214,7 @@ const assemblyUpdateCode = (action: ActionList) => {
             operateUserId: userId,
             id,
           };
-          const data = yield call(${updatetName}, params);
+          const data = yield call(${updateName}, params);
           if (data.code === 1) {
             message.success('更新成功');
             yield put({ type: '${queryName}' });
@@ -238,7 +247,6 @@ module.exports = {
   assemblyModelHeadCode,
   findQueryActionName,
   singleGetActionName,
-
 };
 
 type actionResType = () => string;

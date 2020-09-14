@@ -8,16 +8,17 @@ import config from '../utils/config';
 
 const dataJson: DataJsonType = require('../data/data.json');
 
-const createSpinner = ora('新增模块model代码生成中...').start();
+let createSpinner = null as any;
 
 const { findQueryActionName, singleGetActionName } = require('../listTemplate/modelTemplate');
 
 const updateName = singleGetActionName(findQueryActionName('add'));
 const assemblyCreateModeCode = () => {
+  createSpinner = ora('新增模块model代码生成中...').start();
   let initValue = '';
   dataJson.createPageData.formList.map((item) => {
     if (item.initialValue) {
-      initValue += `${item.key}:"${item.initialValue}",`
+      initValue += `${item.key}:"${item.initialValue}",`;
     }
   });
   let createModelResult = `
@@ -55,6 +56,7 @@ const writeServiceFileCode = (data:string) => {
     fs.mkdirSync(`${config.projectPath}/src/models/${dataJson.createPageData.fileName}`);
   }
   fs.writeFile(`${config.projectPath}/src/models/${dataJson.createPageData.fileName}/${dataJson.createPageData.modelName}.js`, data, 'utf8', () => {
+    console.log('在这边嘛');
     createSpinner.stop();
     createSpinner.succeed('新增模块model生成生成成功!');
   });

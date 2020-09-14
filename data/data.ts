@@ -54,6 +54,7 @@ export interface CreateProject {
     formList: FormList[];
     modelName: string;
     pageName: string;
+    modalTitle:string
 }
 
 export interface FormList {

@@ -5,7 +5,7 @@ import { DataJsonType } from '../data/data';
 // @ts-ignore
 import config from '../utils/config';
 
-const routerSpinner = ora('新增模块router代码生成中...').start();
+let routerSpinner = null as any;
 
 const dataJson: DataJsonType = require('../data/data.json');
 
@@ -14,6 +14,7 @@ const dataJson: DataJsonType = require('../data/data.json');
  */
 
 const assemblyCreateRouter = () => {
+  routerSpinner = ora('新增模块router代码生成中...').start();
   const routerData = fs.readFileSync(`${config.projectPath}/src/router.js`, 'utf-8').split(/\r\n|\n|\r/gm);
   routerData.splice(routerData.length - 23, 0, `{
           path: '${dataJson.createPageData.fileName}/${dataJson.createPageData.pageName}',

@@ -4,6 +4,7 @@ import { DataJsonType } from './data/data';
 const { assemblyActionData } = require('./listTemplate/actionTemplate');
 const { assemblyModelHeadCode } = require('./listTemplate/modelTemplate');
 const { assemblyHomeImportCode } = require('./listTemplate/homeTemplate');
+const { assemblyAddModalCode } = require('./listTemplate/addModalTemplate');
 const { assemblySearchCode } = require('./listTemplate/searchTemplate');
 const { assemblyRouter } = require('./listTemplate/routerTemplate');
 // 创建
@@ -14,7 +15,7 @@ const { assemblyCreateModeCode } = require('./createTemplate/createModelTemplate
 const dataJson: DataJsonType = require('./data/data.json');
 
 const run = () => {
-  // // 生成页面
+  // 生成页面
   assemblyHomeImportCode();
   // 生成action
   assemblyActionData();
@@ -29,8 +30,10 @@ const run = () => {
     assemblyCreateHomeCode();
     assemblyCreateRouter();
     assemblyCreateModeCode();
+  } else {
+    // 生成添加弹窗
+    assemblyAddModalCode();
   }
-
   openBrowser();
 };
 

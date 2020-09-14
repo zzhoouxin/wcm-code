@@ -1,7 +1,7 @@
 import prettier from 'prettier';
 import fs from 'fs';
 import ora from 'ora';
-import {Columns, DataJsonType} from '../data/data';
+import { Columns, DataJsonType } from '../data/data';
 // @ts-ignore
 import config from '../utils/config';
 // @ts-ignore
@@ -23,7 +23,9 @@ const assemblyHomeImportCode = () => {
     import { connect } from 'dva';
     import Header from './header';
     import moment from 'moment';
+    ${!dataJson.openPage ? 'import  AddOrUpdateModal from "./addOrUpdateModal";' : ''}
     `;
+
   homeCodeResult += assemblyDictionaryCode();
   homeCodeResult += assemblyPageCode();
   homeCodeResult += assemblyColumnsCode();
@@ -53,21 +55,18 @@ const writeServiceFileCode = (data:string) => {
   });
 };
 
-
 /**
  * 生成翻译字段的数据
  */
-const assemblyDictionaryCode = ()=>{
-  let code ='';
-  dataJson.table.columns.map((item:Columns)=>{
-    if(item.dictionary){
-      code += `const ${item.key}DictionAry = ${JSON.stringify(item.dictionary)};`
+const assemblyDictionaryCode = () => {
+  let code = '';
+  dataJson.table.columns.map((item:Columns) => {
+    if (item.dictionary) {
+      code += `const ${item.key}DictionAry = ${JSON.stringify(item.dictionary)};`;
     }
-  })
+  });
   return code;
-
-
-}
+};
 /**
  * 组装pageClass头部代码
  */
@@ -126,7 +125,6 @@ const assemblyColumnsCode = () => {
 };
 
 const renderColumnByType = (columns: Columns) => {
-
   let code = ',render:(text,record) =>{ return ';
   switch (columns.type) {
     // 时间格式
@@ -176,7 +174,7 @@ const assemblyRenderCode = () => {
                 columns={this.columns}
             />
             </div>
-            {/* <AddOrUpdateModal /> */}
+             ${!dataJson.openPage ? '<AddOrUpdateModal />' : ''}
         </div>
         );
     }
@@ -194,14 +192,16 @@ const assemblyRenderCode = () => {
      * 编辑事件
      */ 
   edit = async (data) => {
-    const { createSetState } = this.props;
-    await createSetState({
+    const { ${dataJson.openPage ? 'createSetState' : 'setState'} } = this.props;
+    await ${dataJson.openPage ? 'createSetState' : 'setState'}({
       addAndUpdateInfo: {
         ...data
       },
       isEdit: true,
+      ${dataJson.openPage ? '' : 'isShowModal: true'}
     });
-    this.props.history.push({ pathname:  '/${dataJson.createPageData.fileName}/${dataJson.createPageData.pageName}' });
+    ${dataJson.openPage ? `this.props.history.push({ pathname:  '/${dataJson.createPageData.fileName}/${dataJson.createPageData.pageName}' });` : ''}
+    
   }
 
     /**
@@ -255,7 +255,7 @@ const assemblyRenderEditCode = () => {
  */
 const assemblyReduxCode = () => {
   const nameSpace = dataJson.nameList.modelName;
-  const modelName = dataJson.createPageData.modelName;
+  const { modelName } = dataJson.createPageData;
   const queryName = singleGetActionName(findQueryActionName());
   const deleteName = singleGetActionName(findQueryActionName('delete'));
 

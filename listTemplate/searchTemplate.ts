@@ -109,6 +109,9 @@ const generateInsertBtnFn = () => {
   let contentCode = '';
   if (isOpenPage) {
     contentCode = ` this.props.router.push({ pathname: '/${dataJson.createPageData.fileName}/${dataJson.createPageData.pageName}' });`;
+  } else {
+    contentCode = `const {setState} = this.props;
+                   setState({isShowModal:true})`;
   }
 
   const insertBtnFnCode = `
