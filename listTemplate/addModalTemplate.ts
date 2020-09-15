@@ -56,21 +56,7 @@ const assemblyImportAntdCode = () => {
   return importCode;
 };
 
-/**
- * 组装导入其他模块的代码
- */
-const assemblyOtherImportCode = () => {
-  let antdName = '';
-  dataJson.createPageData.formList.map((item) => {
-    if (item.type !== 'textArea') {
-      const name = item.type.charAt(0).toUpperCase() + item.type.slice(1);
-      if (!antdName.includes(name)) {
-        antdName += `${name},`;
-      }
-    }
-  });
-  return `import {Button,Form,Modal,${antdName}} from 'antd';`;
-};
+
 
 /**
  * 写入文件
@@ -199,7 +185,7 @@ const handleSubmitCode = () => {
               value.id = addAndUpdateInfo.id;
             }
             ${updateName}({ ...value });
-            this.props.form.resetFields();
+            // this.props.form.resetFields();
           }
         });
       }

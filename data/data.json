@@ -193,8 +193,16 @@
         "type": "input",
         "maxLength": 200,
         "width": "100%"
+      },
+      {
+        "title": "活动时间",
+        "required": true,
+        "key": "onLineType",
+        "placeholder": "请输入活动时间",
+        "type": "input",
+        "maxLength": 100,
+        "width": "100%"
       }
-
     ]
 
 
