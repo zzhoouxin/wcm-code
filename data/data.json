@@ -41,6 +41,10 @@
         "key": "taskName"
       },
       {
+        "title": "活动简介",
+        "key": "taskDesc"
+      },
+      {
         "title": "积分数值",
         "key": "awardIntegral"
 
@@ -127,16 +131,16 @@
         "required": true,
         "key": "imageUrl",
         "placeholder": "请输入活动图片",
-        "type": "input",
+        "type": "imageUpload",
         "maxLength": 100,
         "width": "100%"
       },
       {
         "title": "活动简介",
         "required": true,
-        "key": "desc",
+        "key": "taskDesc",
         "placeholder": "请输入活动简介",
-        "type": "input",
+        "type": "textArea",
         "maxLength": 100,
         "width": "100%"
       },

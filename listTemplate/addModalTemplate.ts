@@ -11,9 +11,10 @@ const dataJson: DataJsonType = require('../data/data.json');
 const { findQueryActionName, singleGetActionName } = require('../listTemplate/modelTemplate');
 
 const assemblyAddModalCode = () => {
+  const importAntd = assemblyImportAntdCode();
   let addModalCoderResult = `
     import React, { Component } from 'react';
-    import { Button, Form, Input, Modal, Select,InputNumber } from 'antd';
+    ${importAntd}
     import { connect } from 'dva';
     const Option = Select.Option;
     const itemStyle={marginBottom:0}
@@ -29,17 +30,62 @@ const assemblyAddModalCode = () => {
     semi: false,
     parser: 'babel',
   });
-
   writeServiceFileCode(data);
 };
+/**
+ * 组装导入antd的代码
+ */
+const assemblyImportAntdCode = () => {
+  let antdName = '';
+  let hasImageUpload = false;
+  dataJson.createPageData.formList.map((item) => {
+    if (item.type !== 'textArea' && item.type !== 'imageUpload' ) {
+      const name = item.type.charAt(0).toUpperCase() + item.type.slice(1);
+      if (!antdName.includes(name)) {
+        antdName += `${name},`;
+      }
+    }
+    if (item.type === 'imageUpload') {
+      hasImageUpload = true;
+    }
+  });
+  let importCode = `import {Button,Form,Modal,${antdName}} from 'antd'; `;
+  if (hasImageUpload) {
+    importCode += 'import SingleImageUpload from "../../../components/SingleImageUpload";';
+  }
+  return importCode;
+};
 
-const writeServiceFileCode = (data:string) => {
+/**
+ * 组装导入其他模块的代码
+ */
+const assemblyOtherImportCode = () => {
+  let antdName = '';
+  dataJson.createPageData.formList.map((item) => {
+    if (item.type !== 'textArea') {
+      const name = item.type.charAt(0).toUpperCase() + item.type.slice(1);
+      if (!antdName.includes(name)) {
+        antdName += `${name},`;
+      }
+    }
+  });
+  return `import {Button,Form,Modal,${antdName}} from 'antd';`;
+};
+
+/**
+ * 写入文件
+ * @param data
+ */
+const writeServiceFileCode = (data: string) => {
   fs.writeFile(`${config.projectPath}/src/routes/${dataJson.nameList.fileName}/${dataJson.nameList.pageName}/addOrUpdateModal.js`, data, 'utf8', () => {
     addOrUpdate.stop();
     addOrUpdate.succeed('弹窗模块代码生成中生成成功!');
   });
 };
 
+/**
+ * 组装内容
+ */
 const assemblyContentCode = () => {
   const formItemCode = formItemCodeList();
   const code = `
@@ -88,7 +134,6 @@ const generateItemCode = (item: FormList) => {
                 ${item.required ? `{
                   required: true,
                   ${item.type === 'input' ? 'whitespace: true,' : ''}
-                 
                   message: '${item.placeholder}',
                 },` : ''}
               ],
@@ -106,6 +151,11 @@ const generateItemCode = (item: FormList) => {
       break;
     case 'inputNumber':
       code += `<InputNumber placeholder={"${item.placeholder}"} min={${item.min}}  max={${item.max}} style={{width: '${item.width}'}}/>`;
+      break;
+    case 'imageUpload':
+      code += `<SingleImageUpload
+                accept={'.jpg,.jpeg,.png'}
+              />`;
       break;
     default:
       break;
@@ -164,7 +214,7 @@ const handleSubmitCode = () => {
 
 const mapPropsToFilesFn = () => {
   let mapList = '[';
-  dataJson.createPageData.formList.map((item:FormList) => {
+  dataJson.createPageData.formList.map((item: FormList) => {
     mapList += `'${item.key}',`;
   });
   mapList += ']';
