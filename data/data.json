@@ -152,7 +152,17 @@
         "type": "inputNumber",
         "max": 100,
         "min": 1,
-        "width": "100%"
+        "width": "50%"
+      },
+      {
+        "title": "可完成次数",
+        "required": true,
+        "key": "finishNumber",
+        "placeholder": "正整数",
+        "type": "inputNumber",
+        "max": 100,
+        "min": 1,
+        "width": "50%"
       },
       {
         "title": "活动类型",
@@ -182,16 +192,6 @@
         "placeholder": "任务列表跳转链接",
         "type": "input",
         "maxLength": 200,
-        "width": "100%"
-      },
-      {
-        "title": "可完成次数",
-        "required": true,
-        "key": "finishNumber",
-        "placeholder": "正整数",
-        "type": "inputNumber",
-        "max": 100,
-        "min": 1,
         "width": "100%"
       }
 
