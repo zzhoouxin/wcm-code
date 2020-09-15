@@ -68,5 +68,7 @@ export interface FormList {
     maxLength: number;
     width: string;
     options: Array<Options>
+    min:number,
+    max:number
 
 }

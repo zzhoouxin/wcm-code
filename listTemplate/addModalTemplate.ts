@@ -13,10 +13,10 @@ const { findQueryActionName, singleGetActionName } = require('../listTemplate/mo
 const assemblyAddModalCode = () => {
   let addModalCoderResult = `
     import React, { Component } from 'react';
-    import { Button, Form, Input, Modal, Select } from 'antd';
+    import { Button, Form, Input, Modal, Select,InputNumber } from 'antd';
     import { connect } from 'dva';
     const Option = Select.Option;
-    const Item = Form.Item;
+    const itemStyle={marginBottom:0}
     class ${dataJson.createPageData.pageName} extends Component {
     `;
 
@@ -80,13 +80,15 @@ const generateItemCode = (item: FormList) => {
             label={'${item.title}'}
             ${item.required ? 'required' : ''}
             ${item.help ? `help={'${item.help}'}` : ''}
+            style={itemStyle}
           >
             {getFieldDecorator('${item.key}', {
             ${item.initialValue ? `initialValue: '${item.initialValue}',` : ''}
             rules: [
                 ${item.required ? `{
                   required: true,
-                  whitespace: true,
+                  ${item.type === 'input' ? 'whitespace: true,' : ''}
+                 
                   message: '${item.placeholder}',
                 },` : ''}
               ],
@@ -101,6 +103,9 @@ const generateItemCode = (item: FormList) => {
       break;
     case 'select':
       code += generateSelectCode(item);
+      break;
+    case 'inputNumber':
+      code += `<InputNumber placeholder={"${item.placeholder}"} min={${item.min}}  max={${item.max}} style={{width: '${item.width}'}}/>`;
       break;
     default:
       break;
@@ -125,7 +130,7 @@ const handleSubmitCode = () => {
   let initValue = '';
   dataJson.createPageData.formList.map((item) => {
     if (item.initialValue) {
-      initValue += `${item.key}:"${item.initialValue}",`
+      initValue += `${item.key}:"${item.initialValue}",`;
     }
   });
 
@@ -133,7 +138,6 @@ const handleSubmitCode = () => {
      addAndUpdateInfo: {
       ${initValue}
       }`;
-
 
   const submitCode = `
      handleSubmit = (e) => {

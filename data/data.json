@@ -2,30 +2,26 @@
 
   "actionList": [
     {
-      "name": "dissertation/addOrUpdateDissertation",
-      "desc": "创建专题模块",
+      "name": "activityTask/addOrUpdateActivityTask",
+      "desc": "新增或编辑活动任务",
       "type": "add"
     },
     {
-      "name": "dissertation/queryDissertationList",
-      "desc": "查询专题列表",
+      "name": "activityTask/queryActivityTaskList",
+      "desc": "分页查询活动任务列表",
       "type": "query"
     },
     {
-      "name": "dissertation/deleteDissertation",
-      "desc": "删除路由",
+      "name": "activityTask/deleteActivityTask",
+      "desc": "删除活动任务",
       "type": "delete"
-    },
-    {
-      "name": "pushManagement/getContentByName",
-      "desc": "根据名称查询"
     }
   ],
   "nameList": {
-    "fileName": "zhangling",
-    "modelName": "zhanglingModel",
-    "pageName": "zhanglingList",
-    "searchBtnName": "新增专题"
+    "fileName": "integral",
+    "modelName": "integral",
+    "pageName": "integralList",
+    "searchBtnName": "新增活动"
 
   },
   "table": {
@@ -35,52 +31,60 @@
         "key": "id"
       },
       {
-        "title": "专题名称",
-        "key": "name",
-        "width": "10%"
+        "title": "活动图片",
+        "key": "imageUrl",
+        "width": "10%",
+        "type": 3
       },
       {
-        "title": "专题描述",
-        "key": "desc",
-        "width": "30%"
+        "title": "活动名称",
+        "key": "taskName"
       },
       {
-        "title": "专题标签",
-        "key": "label",
-        "width": "20%"
+        "title": "积分数值",
+        "key": "awardIntegral"
+
       },
       {
-        "title": "内容类型",
-        "key": "type",
+        "title": "活动类型",
+        "key": "taskType",
         "type": 2,
         "dictionary": {
-          "1": "文章",
-          "2": "DNA"
+          "1": "日常任务",
+          "2": "临时任务"
         }
       },
       {
-        "title": "创建时间",
-        "key": "createTime",
-        "type": 1
+        "title": "活动链接",
+        "key": "openUrl"
       },
       {
-        "title": "更新时间",
-        "key": "updateTime",
-        "type": 1
+        "title": "在线时间",
+        "key": "onLineType"
+      },
+      {
+        "title": "状态",
+        "key": "delFlag",
+        "type": 2,
+        "dictionary": {
+          "1": "在线",
+          "0": "离线"
+        }
       }
+
     ]
   },
   "searchFrom": [
     {
-      "title": "名称",
+      "title": "活动名称",
       "initialValue": "",
-      "key": "name",
-      "placeholder": "请输入描述吧",
+      "key": "taskName",
+      "placeholder": "请输入活动名称",
       "type": "input"
     },
 
     {
-      "title": "状态",
+      "title": "taskType",
       "initialValue": "",
       "key": "type",
       "placeholder": "",
@@ -92,11 +96,11 @@
         },
         {
           "value": "1",
-          "name": "文章"
+          "name": "日常任务"
         },
         {
           "value": "2",
-          "name": "DNA"
+          "name": "临时任务"
         }
       ]
     }
@@ -104,59 +108,54 @@
   "openPage": false,
   "updateAndInsertSameInterface": true,
   "createPageData": {
-    "fileName": "zhangling",
-    "modelName":"createProjectModel",
-    "pageName": "createProject",
-    "modalTitle": "新增专题",
+    "fileName": "addOrUpdateModal",
+    "modelName":"",
+    "pageName": "addOrUpdateModal",
+    "modalTitle": "新增任务",
     "formList": [
       {
-        "title": "专题名称",
+        "title": "活动名称",
         "required": true,
-        "help": "15字以内",
-
-        "key": "name",
-        "placeholder": "请输入描述吧",
+        "key": "taskName",
+        "placeholder": "请输入活动名称",
         "type": "input",
         "maxLength": 100,
-        "width": "30%"
+        "width": "100%"
       },
       {
-        "title": "专题描述",
+        "title": "活动图片",
         "required": true,
-        "help": "200字以内",
+        "key": "imageUrl",
+        "placeholder": "请输入活动图片",
+        "type": "input",
+        "maxLength": 100,
+        "width": "100%"
+      },
+      {
+        "title": "活动简介",
+        "required": true,
         "key": "desc",
-        "placeholder": "请输入专题描述",
-        "type": "textArea",
-        "maxLength": 200,
-        "width": "70%"
-      },
-      {
-        "title": "专题标签",
-        "required": true,
-        "help": "200字以内",
-        "key": "label",
-        "placeholder": "请输入专题标签",
+        "placeholder": "请输入活动简介",
         "type": "input",
-        "maxLength": 200,
-        "width": "70%"
+        "maxLength": 100,
+        "width": "100%"
       },
-
       {
-        "title": "专题头图",
+        "title": "积分数额",
         "required": true,
-        "help": "200字以内",
-        "key": "headImage",
-        "placeholder": "请输入专题头图",
-        "type": "input",
-        "maxLength": 200,
-        "width": "70%"
+        "key": "awardIntegral",
+        "placeholder": "正整数",
+        "type": "inputNumber",
+        "max": 100,
+        "min": 1,
+        "width": "100%"
       },
       {
-        "title": "内容类型",
-        "key": "type",
+        "title": "活动类型",
+        "key": "taskType",
         "type": "select",
         "initialValue": "1",
-        "width": "50%",
+        "width": "100%",
         "options": [
           {
             "value": "",
@@ -164,24 +163,34 @@
           },
           {
             "value": 1,
-            "name": "文章"
+            "name": "日常"
           },
           {
             "value":2,
-            "name": "DNA"
+            "name": "临时"
           }
         ]
       },
       {
-        "title": "专题内容",
+        "title": "跳转链接",
         "required": true,
-        "help": "200字以内",
-        "key": "contentList",
-        "placeholder": "请输入专题内容",
+        "key": "openUrl",
+        "placeholder": "任务列表跳转链接",
         "type": "input",
         "maxLength": 200,
-        "width": "70%"
+        "width": "100%"
+      },
+      {
+        "title": "可完成次数",
+        "required": true,
+        "key": "finishNumber",
+        "placeholder": "正整数",
+        "type": "inputNumber",
+        "max": 100,
+        "min": 1,
+        "width": "100%"
       }
+
     ]
 
 
